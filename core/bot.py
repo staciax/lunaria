@@ -13,7 +13,6 @@ from colorthief import ColorThief
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from . import __version__
 from .cog import LunaCog
 from .translator import LunaTranslator
 from .tree import LunaTree
@@ -29,12 +28,13 @@ os.environ['JISHAKU_HIDE'] = 'True'
 description = 'Hello, I\'m lunaria bot, a bot made by discord: stacia.(240059262297047041)'
 
 INITIAL_EXTENSIONS = (
-    # 'cogs.about',
     'cogs.admin',
-    # 'cogs.errors',
-    # 'cogs.events',
-    # 'cogs.help',
+    'cogs.events',
     'cogs.jsk',
+    'cogs.stats',
+    # 'cogs.about',
+    # 'cogs.errors',
+    # 'cogs.help',
 )
 
 
@@ -72,17 +72,11 @@ class Lunaria(commands.AutoShardedBot):
         )
         self._debug_mode: bool = debug_mode
         self._tree_sync_at_startup: bool = tree_sync_at_startup
-        self._version: str = __version__
-        # self.emoji: type[Emoji] = Emoji
+        self.version: str = '0.1.0a'
         self.support_guild_id: int = 1097859504906965042
         self.support_invite_url: str = 'https://discord.gg/'
         # palettes
         self.palettes: dict[str, list[discord.Colour]] = {}
-
-        # # maintenance
-        # self._is_maintenance: bool = False
-        # self.maintenance_message: str = 'Bot is in maintenance mode.'
-        # self.maintenance_time: datetime.datetime | None = None
 
     @property
     def owner(self) -> discord.User:
@@ -94,10 +88,6 @@ class Lunaria(commands.AutoShardedBot):
         if self.support_guild_id is None:
             raise ValueError('Support guild ID is not set.')
         return self.get_guild(self.support_guild_id)
-
-    @property
-    def version(self) -> str:
-        return self._version
 
     @discord.utils.cached_property
     def traceback_log(self) -> discord.TextChannel | None:
@@ -128,9 +118,8 @@ class Lunaria(commands.AutoShardedBot):
     # def traceback_log(self) -> Optional[Union[discord.abc.GuildChannel, discord.Thread, discord.abc.PrivateChannel]]:
     #     return self.get_channel(config.traceback_channel_id)
 
-    # def is_blocked(self, obj: discord.abc.User | discord.Guild | int, /) -> bool:
-    #     obj_id = obj if isinstance(obj, int) else obj.id
-    #     return self.db.get_blacklist(obj_id) is not None
+    def is_blocked(self, obj: discord.abc.User | discord.Guild | int, /) -> bool:
+        return False
 
     # bot extension setup
 
@@ -147,10 +136,7 @@ class Lunaria(commands.AutoShardedBot):
         await asyncio.gather(*[self.unload_extension(extension) for extension in INITIAL_EXTENSIONS])
 
     async def setup_hook(self) -> None:
-        # asyncio.get_running_loop().set_debug(self.is_debug_mode())
-
         self.session = aiohttp.ClientSession()
-
         self.translator = LunaTranslator(self)
         await self.tree.set_translator(self.translator)
 
