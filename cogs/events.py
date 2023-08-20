@@ -47,10 +47,8 @@ class Event(commands.Cog, name='events'):
 
         await self.webhook.send(embed=embed, silent=True)
 
-    @commands.Cog.listener('on_guild_join')
-    async def on_luna_join(self, guild: discord.Guild) -> None:
-        """Called when Lunaria joins a guild"""
-
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild: discord.Guild) -> None:
         if self.bot.is_blocked(guild):
             _log.info(f'left guild {guild.id} because it is blacklisted')
             return await guild.leave()
@@ -58,9 +56,8 @@ class Event(commands.Cog, name='events'):
         embed = discord.Embed(title='ᴊᴏɪɴᴇᴅ ꜱᴇʀᴠᴇʀ')  # .success()
         await self.send_guild_stats(embed, guild)
 
-    @commands.Cog.listener('on_guild_remove')
-    async def on_luna_leave(self, guild: discord.Guild) -> None:
-        """Called when Lunaria leaves a guild"""
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild: discord.Guild) -> None:
         embed = discord.Embed(title='ʟᴇꜰᴛ ꜱᴇʀᴠᴇʀ')  # .error()
         await self.send_guild_stats(embed, guild)
 
