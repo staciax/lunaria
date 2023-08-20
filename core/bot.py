@@ -19,7 +19,7 @@ from .tree import LunaTree
 
 load_dotenv()
 
-_log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 # jishaku
 os.environ['JISHAKU_NO_UNDERSCORE'] = 'True'
@@ -177,12 +177,15 @@ class Lunaria(commands.AutoShardedBot):
                 status=discord.Status.idle,
             )
 
-        _log.info(
+        log.info(
             f'logged in as: {self.user} '
             + (f'activity: {self.activity.name} ' if self.activity is not None else '')
             + f'servers: {len(self.guilds)} '
             + f'users: {sum(guild.member_count for guild in self.guilds if guild.member_count is not None)}'
         )
+
+    async def on_shard_resumed(self, shard_id: int):
+        log.info('Shard ID %s has resumed...', shard_id)
 
     async def on_message(self, message: discord.Message, /) -> None:
         if message.author == self.user:
@@ -191,7 +194,7 @@ class Lunaria(commands.AutoShardedBot):
         await self.process_commands(message)
 
     async def on_error(self, event_method: str, /, *args: Any, **kwargs: Any) -> None:
-        _log.exception('Ignoring exception in %s', event_method)
+        log.error('Ignoring exception in %s', event_method)
 
     # palettes
 
@@ -245,28 +248,28 @@ class Lunaria(commands.AutoShardedBot):
         try:
             await super().load_extension(name, package=package)
         except Exception as e:
-            _log.error('failed to load extension %s', name, exc_info=e)
+            log.error('failed to load extension %s', name, exc_info=e)
             raise e
         else:
-            _log.info('loaded extension %s', name)
+            log.info('loaded extension %s', name)
 
     async def unload_extension(self, name: str, *, package: str | None = None) -> None:
         try:
             await super().unload_extension(name, package=package)
         except Exception as e:
-            _log.error('failed to unload extension %s', name, exc_info=e)
+            log.error('failed to unload extension %s', name, exc_info=e)
             raise e
         else:
-            _log.info('unloaded extension %s', name)
+            log.info('unloaded extension %s', name)
 
     async def reload_extension(self, name: str, *, package: str | None = None) -> None:
         try:
             await super().reload_extension(name, package=package)
         except Exception as e:
-            _log.error('failed to reload extension %s', name, exc_info=e)
+            log.error('failed to reload extension %s', name, exc_info=e)
             raise e
         else:
-            _log.info('reloaded extension %s', name)
+            log.info('reloaded extension %s', name)
 
     async def close(self) -> None:
         await self.cogs_unload()
