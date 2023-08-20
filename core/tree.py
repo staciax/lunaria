@@ -10,25 +10,28 @@ if TYPE_CHECKING:
     from .bot import Lunaria
 
 
-_log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class LunaTree(app_commands.CommandTree['Lunaria']):
     async def interaction_check(self, interaction: discord.Interaction[Lunaria], /) -> bool:
-        # user = interaction.user
-        # guild = interaction.guild
-        # locale = interaction.locale
-        # command = interaction.command
+        user = interaction.user
+        guild = interaction.guild
+        locale = interaction.locale
+        command = interaction.command
 
-        # if await self.client.is_owner(user):
-        #     return True
+        if await self.client.is_owner(user):
+            return True
+
+        if self.client.is_blocked(user):
+            return False
 
         return True
 
     async def sync(self, *, guild: discord.abc.Snowflake | None = None) -> list[app_commands.AppCommand]:
         synced = await super().sync(guild=guild)
         if synced:
-            _log.info('synced %s application commands %s' % (len(synced), f'for guild {guild.id}' if guild else ''))
+            log.info('synced %s application commands %s' % (len(synced), f'for guild {guild.id}' if guild else ''))
         return synced
 
     async def on_error(
@@ -44,7 +47,7 @@ class LunaTree(app_commands.CommandTree['Lunaria']):
         for server in server_app_commands:
             command = self.get_command(server.name, type=server.type)
             if command is None:
-                _log.warning('not found command %s (type: %s)', server.name, server.type)
+                log.warning('not found command %s (type: %s)', server.name, server.type)
                 continue
             command.extras['model'] = server
 

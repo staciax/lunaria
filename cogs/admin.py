@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from core.bot import Lunaria
 
 
-_log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 EXTENSIONS = Literal['cogs.jsk',]
 
@@ -27,7 +27,7 @@ class Admin(commands.Cog, name='admin'):
 
     extension = app_commands.Group(
         name=_T('ext'),
-        description=_T('extension manager'),
+        description=_T('Extension manager'),
         default_permissions=discord.Permissions(
             administrator=True,
         ),

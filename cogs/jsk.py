@@ -25,7 +25,7 @@ from core.checks import owner_only
 if TYPE_CHECKING:
     from core.bot import Lunaria
 
-_log = logging.getLogger(__file__)
+log = logging.getLogger(__file__)
 
 # https://github.com/Gorialis/jishaku
 
@@ -225,7 +225,7 @@ class Jishaku(*OPTIONAL_FEATURES, *STANDARD_FEATURES, name='jishaku'):
         try:
             await jsk(ctx, argument=codeblock)  # type: ignore
         except Exception as e:
-            _log.error(e)
+            log.error(e)
             # TODO: better error handling
             raise app_commands.AppCommandError('Invalid Python code.') from e
 
@@ -234,4 +234,4 @@ async def setup(bot: Lunaria) -> None:
     if bot.support_guild_id is not None:
         await bot.add_cog(Jishaku(bot=bot), guilds=[discord.Object(id=bot.support_guild_id)])
     else:
-        _log.warning('support guild id is not set. Jishaku cog will not be loaded.')
+        log.warning('support guild id is not set. Jishaku cog will not be loaded.')
