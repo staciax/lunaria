@@ -172,17 +172,12 @@ class Lunaria(commands.AutoShardedBot):
             await self.change_presence(
                 activity=discord.Activity(
                     type=discord.ActivityType.listening,
-                    name='latte maid is in debug mode',
+                    name='lunaria is in debug mode',
                 ),
                 status=discord.Status.idle,
             )
 
-        log.info(
-            f'logged in as: {self.user} '
-            + (f'activity: {self.activity.name} ' if self.activity is not None else '')
-            + f'servers: {len(self.guilds)} '
-            + f'users: {sum(guild.member_count for guild in self.guilds if guild.member_count is not None)}'
-        )
+        log.info('Ready: %s (ID: %s)', self.user, self.user.id)
 
     # async def on_shard_resumed(self, shard_id: int):
     #     log.info('Shard ID %s has resumed...', shard_id)
@@ -194,7 +189,7 @@ class Lunaria(commands.AutoShardedBot):
         await self.process_commands(message)
 
     async def on_error(self, event_method: str, /, *args: Any, **kwargs: Any) -> None:
-        log.error('Ignoring exception in %s', event_method)
+        log.error('Ignoring error in %s', event_method)
 
     # palettes
 
