@@ -128,11 +128,9 @@ class Lunaria(commands.AutoShardedBot):
         await self.tree.sync(guild=discord.Object(id=self.support_guild_id))
 
     async def cogs_load(self) -> None:
-        """Load cogs."""
         await asyncio.gather(*[self.load_extension(extension) for extension in INITIAL_EXTENSIONS])
 
     async def cogs_unload(self) -> None:
-        """Unload cogs."""
         await asyncio.gather(*[self.unload_extension(extension) for extension in INITIAL_EXTENSIONS])
 
     async def setup_hook(self) -> None:
