@@ -184,8 +184,8 @@ class Lunaria(commands.AutoShardedBot):
             + f'users: {sum(guild.member_count for guild in self.guilds if guild.member_count is not None)}'
         )
 
-    async def on_shard_resumed(self, shard_id: int):
-        log.info('Shard ID %s has resumed...', shard_id)
+    # async def on_shard_resumed(self, shard_id: int):
+    #     log.info('Shard ID %s has resumed...', shard_id)
 
     async def on_message(self, message: discord.Message, /) -> None:
         if message.author == self.user:
