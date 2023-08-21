@@ -47,7 +47,7 @@ class LunaTree(app_commands.CommandTree['Lunaria']):
         for server in server_app_commands:
             command = self.get_command(server.name, type=server.type)
             if command is None:
-                log.warning('not found command %s (type: %s)', server.name, server.type)
+                log.warn('not found command %s (type: %s)', server.name, server.type.name)
                 continue
             command.extras['model'] = server
 

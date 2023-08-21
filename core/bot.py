@@ -46,7 +46,6 @@ class Lunaria(commands.AutoShardedBot):
 
     def __init__(
         self,
-        application_id: int,
         *,
         debug_mode: bool = False,
         tree_sync_at_startup: bool = False,
@@ -67,7 +66,6 @@ class Lunaria(commands.AutoShardedBot):
             case_insensitive=True,
             intents=intents,
             description=description,
-            application_id=application_id,
             tree_cls=LunaTree,
             activity=discord.Activity(type=discord.ActivityType.listening, name='lunaria ♡ ₊˚'),
         )
