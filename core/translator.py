@@ -138,6 +138,7 @@ class LunaTranslator(_Translator):
         #
         self._app_command_localizations: dict[Locale, dict[str, AppCommandLocalization]] = {}
         self._context_menu_localizations: dict[Locale, dict[str, ContextMenuLocalization]] = {}
+        # TODO: improvements for this
         self.lock = asyncio.Lock()
 
     async def load(self) -> None:
