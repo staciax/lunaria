@@ -108,7 +108,6 @@ class LunaCog(commands.Cog):
 
         # app commands localization
         await bot.translator.add_cog_localization(self)
-
         return self
 
     async def _eject(self, bot: Lunaria, guild_ids: Iterable[int] | None) -> None:

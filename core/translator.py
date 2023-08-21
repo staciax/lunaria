@@ -147,6 +147,12 @@ class LunaTranslator(_Translator):
     async def unload(self) -> None:
         log.info('unloaded')
 
+    def clear(self) -> None:
+        self._app_command_localizations.clear()
+        self._context_menu_localizations.clear()
+        del self.__latest_command
+        del self.__latest_parameter
+
     async def translate(self, string: locale_str, locale: Locale, context: TranslationContext) -> str | None:
         localizable: Localizable = context.data
         tcl: TCL = context.location
@@ -166,7 +172,8 @@ class LunaTranslator(_Translator):
             return None
 
         if isinstance(localizable, ContextMenu):
-            localizations = self._context_menu_localizations.get(locale, {})
+            return None
+            # localizations = self._context_menu_localizations.get(locale, {})
         else:
             localizations = self._app_command_localizations.get(locale, {})
 
