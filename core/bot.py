@@ -42,6 +42,7 @@ class Lunaria(commands.AutoShardedBot):
     user: discord.ClientUser
     bot_app_info: discord.AppInfo
     tree: LunaTree
+    translator: LunaTranslator
 
     def __init__(
         self,
