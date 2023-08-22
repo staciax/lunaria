@@ -60,7 +60,7 @@ class Lunaria(commands.AutoShardedBot):
         allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, replied_user=False, users=True)
 
         super().__init__(
-            command_prefix=[],
+            command_prefix=commands.when_mentioned,
             help_command=None,
             allowed_mentions=allowed_mentions,
             case_insensitive=True,
