@@ -5,7 +5,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, TypedDict
+from typing import TYPE_CHECKING, Any, TypedDict, NotRequired
 
 from discord import Locale
 from discord.app_commands import (
@@ -28,21 +28,20 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
+# TODO: re implement this
 
-class OptionLocalization(TypedDict, total=False):
+class OptionLocalization(TypedDict):
     display_name: str
     description: str
-    choices: dict[str | int | float, str]
+    choices: NotRequired[dict[str | int | float, str]]
 
 
 class ContextMenuLocalization(TypedDict):
     name: str
 
-
-class AppCommandLocalization(ContextMenuLocalization, total=False):
+class AppCommandLocalization(ContextMenuLocalization):
     description: str
-    options: dict[str, OptionLocalization]
-
+    options: NotRequired[dict[str, OptionLocalization]]
 
 def get_parameter_payload(
     parameter: Parameter,
@@ -107,7 +106,7 @@ def get_app_command_payload(
         payload['options'] = {param.name: get_parameter_payload(param) for param in command.parameters}
         if merge:
             payload['options'] = {
-                param.name: get_parameter_payload(param, data.get('options', {}).get(param.name, {}), merge=merge)
+                param.name: get_parameter_payload(param, data.get('options', {}).get(param.name, {}), merge=merge) # type: ignore
                 for param in command.parameters
             }
 
@@ -167,7 +166,7 @@ class LunaTranslator(_Translator):
             return None
 
         keys = self._build_localize_keys(tcl, localizable)
-        if not keys:
+        if keys is None:
             log.warn('string: %s not found in %s (tcl: %s)' % (string.message, locale.value, tcl))
             return None
 
@@ -206,7 +205,7 @@ class LunaTranslator(_Translator):
         self,
         tcl: TCL,
         localizable: Localizable,
-    ) -> tuple[str, ...]:
+    ) -> tuple[str, ...] | None:
         if tcl in (TCL.command_name, TCL.group_name):
             assert isinstance(localizable, (Command, Group, ContextMenu))
             self.__latest_command = localizable
@@ -235,7 +234,7 @@ class LunaTranslator(_Translator):
                     'choices',
                     str(localizable.value),
                 )
-        return ()
+        return None
 
     # app command
 
