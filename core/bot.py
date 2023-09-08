@@ -67,7 +67,7 @@ class Lunaria(commands.AutoShardedBot):
             intents=intents,
             description=description,
             tree_cls=LunaTree,
-            activity=discord.Activity(type=discord.ActivityType.listening, name='lunaria ♡ ₊˚'),
+            activity=discord.CustomActivity(name='lunaria ♡ ₊˚'),
         )
         self._debug_mode: bool = debug_mode
         self._tree_sync_at_startup: bool = tree_sync_at_startup
@@ -167,8 +167,7 @@ class Lunaria(commands.AutoShardedBot):
 
         if self.is_debug_mode():
             await self.change_presence(
-                activity=discord.Activity(
-                    type=discord.ActivityType.listening,
+                activity=discord.CustomActivity(
                     name='lunaria is in debug mode',
                 ),
                 status=discord.Status.idle,
