@@ -30,6 +30,7 @@ log = logging.getLogger(__name__)
 
 # TODO: re implement this
 
+
 class OptionLocalization(TypedDict):
     display_name: str
     description: str
@@ -39,9 +40,11 @@ class OptionLocalization(TypedDict):
 class ContextMenuLocalization(TypedDict):
     name: str
 
+
 class AppCommandLocalization(ContextMenuLocalization):
     description: str
     options: NotRequired[dict[str, OptionLocalization]]
+
 
 def get_parameter_payload(
     parameter: Parameter,
@@ -106,7 +109,7 @@ def get_app_command_payload(
         payload['options'] = {param.name: get_parameter_payload(param) for param in command.parameters}
         if merge:
             payload['options'] = {
-                param.name: get_parameter_payload(param, data.get('options', {}).get(param.name, {}), merge=merge) # type: ignore
+                param.name: get_parameter_payload(param, data.get('options', {}).get(param.name, {}), merge=merge)  # type: ignore
                 for param in command.parameters
             }
 
