@@ -5,7 +5,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, TypedDict, NotRequired
+from typing import TYPE_CHECKING, Any, NotRequired, TypedDict
 
 from discord import Locale
 from discord.app_commands import (
