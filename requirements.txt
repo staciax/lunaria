@@ -16,7 +16,7 @@ jishaku @ git+https://github.com/Gorialis/jishaku.git
 python-dotenv
 
 # image manipulation
-Pillow>=10.0,<11
+Pillow>=10.0.1,<11
 colorthief==0.2.1
 
 # utils
