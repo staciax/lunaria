@@ -28,13 +28,13 @@ os.environ['JISHAKU_HIDE'] = 'True'
 description = 'Hello, I\'m lunaria bot, a bot made by discord: stacia.(240059262297047041)'
 
 INITIAL_EXTENSIONS = (
+    'cogs.about',
     'cogs.admin',
+    'cogs.errors',
     'cogs.events',
+    'cogs.help',
     'cogs.jsk',
     'cogs.stats',
-    # 'cogs.about',
-    # 'cogs.errors',
-    # 'cogs.help',
 )
 
 
