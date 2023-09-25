@@ -20,8 +20,8 @@ Pillow>=10.0.1,<11
 colorthief==0.2.1
 
 # utils
-# psutil
-# pygit2
+psutil>=5.9.5,<6
+pygit2>=1.13.0,<2
 
 # speedups
 uvloop; sys_platform != 'win32'
