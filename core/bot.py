@@ -72,7 +72,7 @@ class Lunaria(commands.AutoShardedBot):
         self._debug_mode: bool = debug_mode
         self._tree_sync_at_startup: bool = tree_sync_at_startup
         self.version: str = '0.1.0a'
-        self.support_guild_id: int = 1097859504906965042
+        self.support_guild_id: int = 1155822090025451520
         self.support_invite_url: str = 'https://discord.gg/'
         # palettes
         self.palettes: dict[str, list[discord.Colour]] = {}
