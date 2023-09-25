@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import datetime
 import itertools
-
-# import platform
+import platform
 from typing import TYPE_CHECKING
 
 import discord
@@ -11,17 +10,18 @@ import psutil
 import pygit2
 
 # import pkg_resources
-from discord import Embed, app_commands
+from discord import app_commands
 from discord.app_commands import locale_str as _T
 from discord.app_commands.checks import bot_has_permissions
 from discord.utils import format_dt
 
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
+from core.ui.embed import Embed
 
-# from core.ui.embed import MiadEmbed
+# from core.utils.useful import count_python
+
 # from core.ui.views import BaseView
-from core.utils.useful import count_python
 
 if TYPE_CHECKING:
     from core.bot import Lunaria
@@ -94,25 +94,25 @@ class About(Cog, name='about'):
         locale = interaction.locale
 
         # e = self.bot.emoji
-        # core_dev = self.bot.owner
+        core_dev = self.bot.owner
         # guild_count = len(self.bot.guilds)
         # channel_count = len(list(self.bot.get_all_channels()))
         # member_count = sum(guild.member_count for guild in self.bot.guilds if guild.member_count is not None)
         # total_commands = len(self.bot.tree.get_commands())
-        # # dpy_version = pkg_resources.get_distribution('discord.py').version
-        # memory_usage = self.process.memory_full_info().uss / 1024**2
-        # cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
+        # dpy_version = pkg_resources.get_distribution('discord.py').version
+        memory_usage = self.process.memory_full_info().uss / 1024**2
+        cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
 
-        # embed = Embed(timestamp=interaction.created_at) #.purple()
-        # embed.set_author(
-        #     name=_('about.me', locale),
-        #     icon_url=self.bot.user.avatar if self.bot.user else None,
-        # )
-        # embed.add_field(
-        #     name=_('latest.update', locale) + ':',
-        #     value=get_latest_commits(limit=5),
-        #     inline=False,
-        # )
+        embed = Embed(timestamp=interaction.created_at).purple()
+        embed.set_author(
+            name=_('about.me', locale),
+            icon_url=self.bot.user.avatar if self.bot.user else None,
+        )
+        embed.add_field(
+            name=_('latest.update', locale) + ':',
+            value=get_latest_commits(limit=5),
+            inline=False,
+        )
         # embed.add_field(
         #     name=_('stats', locale) + ':',
         #     value=f'{e.latte_icon} ꜱᴇʀᴠᴇʀꜱ: `{guild_count}`\n'
@@ -129,35 +129,35 @@ class About(Cog, name='about'):
         #     + f'{e.discord_py} ᴅɪꜱᴄᴏʀᴅ.ᴘʏ: `{discord.__version__}`',
         #     inline=True,
         # )``
-        # # embed.add_empty_field(inline=True)
-        # embed.add_field(
-        #     name=_('process', locale) + ':',
-        #     value=f'ᴏꜱ: `{platform.system()}`\n'
-        #     + f'ᴄᴘᴜ ᴜꜱᴀɢᴇ: `{cpu_usage:.2f}%`\n'
-        #     + f'ᴍᴇᴍᴏʀʏ ᴜꜱᴀɢᴇ: `{round(memory_usage, 2)} MB`',
-        #     inline=True,
-        # )
-        # embed.add_field(
-        #     name=_('uptime', locale) + ':',
-        #     value=f'ʙᴏᴛ: <t:{round(self.bot.launch_time.timestamp())}:R>\n' + f'ꜱʏꜱᴛᴇᴍ: <t:{round(psutil.boot_time())}:R>',
-        #     inline=True,
-        # )
-        # # embed.add_empty_field(inline=True)
-        # embed.set_footer(
-        #     text=_('developed.by', locale) + f' {core_dev}',
-        #     icon_url=core_dev.avatar,
-        # )
+        embed.add_empty_field(inline=True)
+        embed.add_field(
+            name=_('process', locale) + ':',
+            value=f'ᴏꜱ: `{platform.system()}`\n'
+            + f'ᴄᴘᴜ ᴜꜱᴀɢᴇ: `{cpu_usage:.2f}%`\n'
+            + f'ᴍᴇᴍᴏʀʏ ᴜꜱᴀɢᴇ: `{round(memory_usage, 2)} MB`',
+            inline=True,
+        )
+        embed.add_field(
+            name=_('uptime', locale) + ':',
+            value=f'ʙᴏᴛ: <t:{round(self.bot.launch_time.timestamp())}:R>\n' + f'ꜱʏꜱᴛᴇᴍ: <t:{round(psutil.boot_time())}:R>',
+            inline=True,
+        )
+        embed.add_empty_field(inline=True)
+        embed.set_footer(
+            text=_('developed.by', locale) + f' {core_dev}',
+            icon_url=core_dev.avatar,
+        )
 
         # # view = BaseView()
         # # view.url_button(_('support.server', locale), self.bot.support_invite_url, emoji=str(e.latte_icon))
         # # view.url_button(_('developer', locale), f'https://discord.com/users/{core_dev.id}', emoji=str(e.stacia_dev))
 
-        # await interaction.response.send_message(embed=embed) #, view=view)
+        await interaction.response.send_message(embed=embed)  # , view=view)
 
     @app_commands.command(name=_T('support'), description=_T('Sends the support server of the bot.'))
     @bot_has_permissions(send_messages=True, embed_links=True)
     async def support(self, interaction: discord.Interaction[Lunaria]) -> None:
-        locale = interaction.locale
+        # locale = interaction.locale
         embed = Embed()
         embed.set_author(name='ꜱᴜᴘᴘᴏʀᴛ:', icon_url=self.bot.user.avatar, url=self.bot.support_invite_url)
         embed.set_thumbnail(url=self.bot.user.avatar)
