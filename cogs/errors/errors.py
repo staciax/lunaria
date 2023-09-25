@@ -1,25 +1,22 @@
 from __future__ import annotations
 
 import contextlib
-
-# import io
+import io
 import logging
-
-# import traceback
+import traceback
 from typing import TYPE_CHECKING
 
 import discord
 from discord import Embed, app_commands, ui
+from jishaku.paginators import PaginatorInterface, WrappedPaginator
 
-# from core import errors
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
+from core.ui.embed import Embed
+from core.utils.chat_formatting import code_block
 
-# from jishaku.paginators import PaginatorInterface, WrappedPaginator
-
-# from core.ui.embed import MiadEmbed
+# from core import errors
 # from core.ui.views import BaseView
-# from core.utils.chat_formatting import code_block
 
 if TYPE_CHECKING:
     from discord.ui import Item, Modal
@@ -152,7 +149,7 @@ def get_error_handle_embed(
     title: str,
     message: str,
 ) -> Embed:
-    embed = Embed(description=message)  # .error()
+    embed = Embed(description=message).error()
     icon_url = user.display_avatar.url if user else None
     embed.set_author(name=title, icon_url=icon_url)
     return embed
@@ -181,20 +178,20 @@ class Errors(Cog, name='errors'):
         embed = Embed(timestamp=interaction.created_at)  # .error()
         embed.set_author(name=f'{interaction.user} | {interaction.user.id}', icon_url=interaction.user.avatar)
 
-        # traceback_fmt = code_block(traceback.format_exc(), 'py')
+        traceback_fmt = code_block(traceback.format_exc(), 'py')
 
-        # fp = io.BytesIO(traceback.format_exc().encode('utf-8'))
-        # traceback_fp = discord.File(fp, filename='traceback.py')
+        fp = io.BytesIO(traceback.format_exc().encode('utf-8'))
+        traceback_fp = discord.File(fp, filename='traceback.py')
 
-        # if len(traceback_fmt) >= 1980:
-        #     paginator = WrappedPaginator(prefix='```py', suffix='```', max_size=1980)
-        #     result = str(traceback.format_exc())
-        #     if len(result) <= 2000:
-        #         if result.strip() == '':
-        #             result = '\u200b'
-        #     paginator.add_line(result)
-        #     interface = PaginatorInterface(self.bot, paginator, owner=self.bot.owner, emoji='<:ThinkO_O:744344862521950268>')
-        #     await interface.send_to(self.bot.owner)
+        if len(traceback_fmt) >= 1980:
+            paginator = WrappedPaginator(prefix='```py', suffix='```', max_size=1980)
+            result = str(traceback.format_exc())
+            if len(result) <= 2000:
+                if result.strip() == '':
+                    result = '\u200b'
+            paginator.add_line(result)
+            interface = PaginatorInterface(self.bot, paginator, owner=self.bot.owner, emoji='<:ThinkO_O:744344862521950268>')
+            await interface.send_to(self.bot.owner)
 
         # if self.bot.traceback_log is not None:
         #     await self.bot.traceback_log.send(embed=embed, file=traceback_fp)
