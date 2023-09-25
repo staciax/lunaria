@@ -1,18 +1,22 @@
 from __future__ import annotations
 
 import contextlib
+
 # import io
 import logging
+
 # import traceback
 from typing import TYPE_CHECKING
 
 import discord
-from discord import app_commands, ui, Embed
-# from jishaku.paginators import PaginatorInterface, WrappedPaginator
+from discord import Embed, app_commands, ui
 
 # from core import errors
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
+
+# from jishaku.paginators import PaginatorInterface, WrappedPaginator
+
 # from core.ui.embed import MiadEmbed
 # from core.ui.views import BaseView
 # from core.utils.chat_formatting import code_block
@@ -148,7 +152,7 @@ def get_error_handle_embed(
     title: str,
     message: str,
 ) -> Embed:
-    embed = Embed(description=message) # .error()
+    embed = Embed(description=message)  # .error()
     icon_url = user.display_avatar.url if user else None
     embed.set_author(name=title, icon_url=icon_url)
     return embed
@@ -166,13 +170,15 @@ def _log_error(interaction: discord.Interaction[Lunaria], error: Exception) -> N
 
 @cog_i18n(_)
 class Errors(Cog, name='errors'):
+    __cog_app_commands_translation__: bool = False
+
     """Developer commands"""
 
     def __init__(self, bot: Lunaria) -> None:
         self.bot = bot
 
     async def send_traceback(self, interaction: discord.Interaction[Lunaria]) -> None:
-        embed = Embed(timestamp=interaction.created_at) # .error()
+        embed = Embed(timestamp=interaction.created_at)  # .error()
         embed.set_author(name=f'{interaction.user} | {interaction.user.id}', icon_url=interaction.user.avatar)
 
         # traceback_fmt = code_block(traceback.format_exc(), 'py')
