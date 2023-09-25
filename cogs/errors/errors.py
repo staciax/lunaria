@@ -13,10 +13,10 @@ from jishaku.paginators import PaginatorInterface, WrappedPaginator
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
 from core.ui.embed import Embed
-from core.utils.chat_formatting import code_block
 
 # from core import errors
-# from core.ui.views import BaseView
+from core.ui.view import View
+from core.utils.chat_formatting import code_block
 
 if TYPE_CHECKING:
     from discord.ui import Item, Modal
@@ -63,8 +63,7 @@ async def application_error_handler(
 
 
 def guild_support_view(locale: discord.Locale) -> ui.View:
-    # view = BaseView().url_button(_('Support Server', locale), 'https://discord.gg/4N2YkXbM')
-    view = discord.ui.View()
+    view = View().url_button(_('Support Server', locale), 'https://discord.gg/4N2YkXbM')
     return view
 
 
