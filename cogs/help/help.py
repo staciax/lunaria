@@ -16,7 +16,8 @@ from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
 from core.ui.embed import Embed
 
-# from core.ui.views import ViewAuthor
+# from core.ui.view import ViewAuthor
+
 # from core.utils.pages import LattePages, ListPageSource
 
 if TYPE_CHECKING:
