@@ -14,8 +14,8 @@ from discord.ext import commands
 from core.checks import bot_has_permissions, cooldown_short, dynamic_cooldown  # , user as user_check
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
+from core.ui.embed import Embed
 
-# from core.ui.embed import MiadEmbed as Embed
 # from core.ui.views import ViewAuthor
 # from core.utils.pages import LattePages, ListPageSource
 
@@ -27,7 +27,7 @@ _ = I18n('help', __file__)
 
 def help_command_embed(interaction: discord.Interaction[Lunaria]) -> Embed:
     bot = interaction.client
-    embed = Embed(timestamp=interaction.created_at)  # .white()
+    embed = Embed(timestamp=interaction.created_at).white()
     embed.set_author(
         name=f'{bot.user.display_name} - ' + _('help.command', interaction.locale),
         icon_url=bot.user.display_avatar,
