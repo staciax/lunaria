@@ -4,9 +4,9 @@ import datetime
 from typing import TYPE_CHECKING, Any, Iterable
 
 from discord import Colour, Embed as _Embed
-from discord.types.embed import EmbedType
 
 if TYPE_CHECKING:
+    from discord.types.embed import EmbedType
     from typing_extensions import Self
 
 # fmt: off
