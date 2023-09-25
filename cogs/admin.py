@@ -16,7 +16,15 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-EXTENSIONS = Literal['cogs.jsk',]
+EXTENSIONS = Literal[
+    'cogs.admin',
+    'cogs.about',
+    'cogs.errors',
+    'cogs.help',
+    'cogs.jsk',
+    'cogs.events',
+    'cogs.stats',
+]
 
 
 class Admin(commands.Cog, name='admin'):
