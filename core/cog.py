@@ -61,6 +61,7 @@ def context_menu(
 
 
 class LunaCog(commands.Cog):
+    __cog_app_commands_translation__: bool = True
     __cog_context_menus__: list[app_commands.ContextMenu]
 
     def _get_file_path(self) -> str | None:
@@ -107,7 +108,8 @@ class LunaCog(commands.Cog):
                     self.__cog_context_menus__ = [menu]
 
         # app commands localization
-        await bot.translator.add_cog_localization(self)
+        if self.__cog_app_commands_translation__:
+            await bot.translator.add_cog_localization(self)
         return self
 
     async def _eject(self, bot: Lunaria, guild_ids: Iterable[int] | None) -> None:
@@ -125,4 +127,5 @@ class LunaCog(commands.Cog):
                         pass
 
         # app commands localization
-        await bot.translator.remove_cog_localization(self)
+        if self.__cog_app_commands_translation__:
+            await bot.translator.remove_cog_localization(self)
