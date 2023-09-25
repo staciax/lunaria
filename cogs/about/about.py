@@ -2,24 +2,26 @@ from __future__ import annotations
 
 import datetime
 import itertools
+
 # import platform
 from typing import TYPE_CHECKING
 
-# import pkg_resources
-from discord import Embed
 import discord
 import psutil
 import pygit2
-from discord import app_commands
+
+# import pkg_resources
+from discord import Embed, app_commands
 from discord.app_commands import locale_str as _T
 from discord.app_commands.checks import bot_has_permissions
 from discord.utils import format_dt
 
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
+
 # from core.ui.embed import MiadEmbed
 # from core.ui.views import BaseView
-# from core.utils.useful import count_python
+from core.utils.useful import count_python
 
 if TYPE_CHECKING:
     from core.bot import Lunaria
@@ -69,7 +71,7 @@ class About(Cog, name='about'):
     @bot_has_permissions(send_messages=True, embed_links=True)
     async def invite(self, interaction: discord.Interaction[Lunaria]) -> None:
         locale = interaction.locale
-        embed = Embed() # .secondary()
+        embed = Embed()  # .secondary()
         embed.set_author(
             name=f'{self.bot.user.name} ' + _('invite.bot', locale),
             url=self.bot.get_invite_url(),
@@ -82,7 +84,7 @@ class About(Cog, name='about'):
 
         # view = BaseView().url_button('ɪɴᴠɪᴛᴇ ᴍᴇ', self.bot.get_invite_url(), emoji=str(self.bot.emoji.latte_icon))
 
-        await interaction.response.send_message(embed=embed) # view=view)
+        await interaction.response.send_message(embed=embed)  # view=view)
 
     @app_commands.command(name=_T('about'), description=_T('Shows bot information'))
     @bot_has_permissions(send_messages=True, embed_links=True)
@@ -126,7 +128,7 @@ class About(Cog, name='about'):
         #     + f'{e.python} ᴘʏᴛʜᴏɴ: `{platform.python_version()}`\n'
         #     + f'{e.discord_py} ᴅɪꜱᴄᴏʀᴅ.ᴘʏ: `{discord.__version__}`',
         #     inline=True,
-        # )
+        # )``
         # # embed.add_empty_field(inline=True)
         # embed.add_field(
         #     name=_('process', locale) + ':',
@@ -166,7 +168,7 @@ class About(Cog, name='about'):
         #     _('developer', locale), f'https://discord.com/users/{self.bot.owner_id}', emoji=str(self.bot.emoji.stacia_dev)
         # )
 
-        await interaction.response.send_message(embed=embed) #, view=view)
+        await interaction.response.send_message(embed=embed)  # , view=view)
 
     # @app_commands.command(name=_T('source'), description=_T('Shows the source code of the bot.'))
     # @app_commands.describe(command=_T('The command to show the source code of.'))

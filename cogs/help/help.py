@@ -1,18 +1,20 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING #, Any
+from typing import TYPE_CHECKING  # , Any
 
 import discord
-from discord import app_commands #, ui
+from discord import app_commands  # , ui
+from discord import Embed
 from discord.app_commands import locale_str as _T
+
 # from discord.app_commands.commands import Command, ContextMenu, Group
 # from discord.app_commands.models import AppCommand
 from discord.ext import commands
 
-from core.checks import bot_has_permissions, cooldown_short, dynamic_cooldown #, user as user_check
+from core.checks import bot_has_permissions, cooldown_short, dynamic_cooldown  # , user as user_check
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
-from discord import Embed
+
 # from core.ui.embed import MiadEmbed as Embed
 # from core.ui.views import ViewAuthor
 # from core.utils.pages import LattePages, ListPageSource
@@ -25,7 +27,7 @@ _ = I18n('help', __file__)
 
 def help_command_embed(interaction: discord.Interaction[Lunaria]) -> Embed:
     bot = interaction.client
-    embed = Embed(timestamp=interaction.created_at) #.white()
+    embed = Embed(timestamp=interaction.created_at)  # .white()
     embed.set_author(
         name=f'{bot.user.display_name} - ' + _('help.command', interaction.locale),
         icon_url=bot.user.display_avatar,
@@ -85,21 +87,21 @@ def cog_embed(cog: commands.Cog | Cog, locale: discord.Locale) -> Embed:
 
 #     async def callback(self, interaction: discord.Interaction[Lunaria]) -> None:
 #         assert self.view is not None
-        # self.view.source = HelpPageSource(self.cog, self.entries)
+# self.view.source = HelpPageSource(self.cog, self.entries)
 
-        # max_pages = self.view.source.get_max_pages()
-        # if max_pages > 1:
-        #     self.view._add_nav_buttons()
-        # else:
-        #     self.view._remove_nav_buttons()
+# max_pages = self.view.source.get_max_pages()
+# if max_pages > 1:
+#     self.view._add_nav_buttons()
+# else:
+#     self.view._remove_nav_buttons()
 
-        # self.disabled = True
-        # for child in self.view.children:
-        #     if isinstance(child, CogButton) and child != self:
-        #         child.disabled = False
+# self.disabled = True
+# for child in self.view.children:
+#     if isinstance(child, CogButton) and child != self:
+#         child.disabled = False
 
-        # self.view.home_button.disabled = False
-        # await self.view.show_page(interaction, 0)
+# self.view.home_button.disabled = False
+# await self.view.show_page(interaction, 0)
 
 
 # class HelpCommandView(ViewAuthor, LattePages):
