@@ -1,0 +1,8 @@
+E_CURSOR = ""
+E_LATTE = ""
+E_PYTHON = ""
+E_DISCORDPY = ""
+E_CHANNEL = ""
+E_APP_COMMAND = ""
+E_MEMBER = ""
+E_DEV = ""

@@ -14,13 +14,14 @@ from discord import app_commands
 from discord.app_commands import locale_str as _T
 from discord.app_commands.checks import bot_has_permissions
 from discord.utils import format_dt
+from core import constants as const
 
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
 from core.ui.embed import Embed
 from core.ui.view import View
 
-# from core.utils.useful import count_python
+from core.utils.useful import count_python
 
 
 if TYPE_CHECKING:
@@ -82,9 +83,9 @@ class About(Cog, name='about'):
             url='https://cdn.discordapp.com/attachments/1001848697316987009/1001858419990478909/invite_banner.png'
         )
 
-        # view = BaseView().url_button('ɪɴᴠɪᴛᴇ ᴍᴇ', self.bot.get_invite_url(), emoji=str(self.bot.emoji.latte_icon))
+        view = View().url_button('ɪɴᴠɪᴛᴇ ᴍᴇ', self.bot.get_invite_url(), emoji=const.E_LATTE)
 
-        await interaction.response.send_message(embed=embed)  # view=view)
+        await interaction.response.send_message(embed=embed, view=view)
 
     @app_commands.command(name=_T('about'), description=_T('Shows bot information'))
     @bot_has_permissions(send_messages=True, embed_links=True)
@@ -93,12 +94,11 @@ class About(Cog, name='about'):
 
         locale = interaction.locale
 
-        # e = self.bot.emoji
         core_dev = self.bot.owner
-        # guild_count = len(self.bot.guilds)
-        # channel_count = len(list(self.bot.get_all_channels()))
-        # member_count = sum(guild.member_count for guild in self.bot.guilds if guild.member_count is not None)
-        # total_commands = len(self.bot.tree.get_commands())
+        guild_count = len(self.bot.guilds)
+        channel_count = len(list(self.bot.get_all_channels()))
+        member_count = sum(guild.member_count for guild in self.bot.guilds if guild.member_count is not None)
+        total_commands = len(self.bot.tree.get_commands())
         # dpy_version = pkg_resources.get_distribution('discord.py').version
         memory_usage = self.process.memory_full_info().uss / 1024**2
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
@@ -113,22 +113,22 @@ class About(Cog, name='about'):
             value=get_latest_commits(limit=5),
             inline=False,
         )
-        # embed.add_field(
-        #     name=_('stats', locale) + ':',
-        #     value=f'{e.latte_icon} ꜱᴇʀᴠᴇʀꜱ: `{guild_count}`\n'
-        #     + f'{e.member_icon} ᴜꜱᴇʀꜱ: `{member_count}`\n'
-        #     + f'{e.slash_command} ᴄᴏᴍᴍᴀɴᴅꜱ: `{total_commands}`\n'
-        #     + f'{e.channel_icon} ᴄʜᴀɴɴᴇʟ: `{channel_count}`',
-        #     inline=True,
-        # )
-        # embed.add_field(
-        #     name=_('bot.info', locale) + ':',
-        #     value=f'{e.cursor} ʟɪɴᴇ ᴄᴏᴜɴᴛ: `{count_python(".")}`\n'
-        #     + f'{e.latte_icon} ʟᴀᴛᴛᴇ_ᴍᴀɪᴅ: `{self.bot._version}`\n'
-        #     + f'{e.python} ᴘʏᴛʜᴏɴ: `{platform.python_version()}`\n'
-        #     + f'{e.discord_py} ᴅɪꜱᴄᴏʀᴅ.ᴘʏ: `{discord.__version__}`',
-        #     inline=True,
-        # )``
+        embed.add_field(
+            name=_('stats', locale) + ':',
+            value=f'{const.E_LATTE} ꜱᴇʀᴠᴇʀꜱ: `{guild_count}`\n'
+            + f'{const.E_MEMBER} ᴜꜱᴇʀꜱ: `{member_count}`\n'
+            + f'{const.E_APP_COMMAND} ᴄᴏᴍᴍᴀɴᴅꜱ: `{total_commands}`\n'
+            + f'{const.E_CHANNEL} ᴄʜᴀɴɴᴇʟ: `{channel_count}`',
+            inline=True,
+        )
+        embed.add_field(
+            name=_('bot.info', locale) + ':',
+            value=f'{const.E_CURSOR} ʟɪɴᴇ ᴄᴏᴜɴᴛ: `{count_python(".")}`\n'
+            + f'{const.E_LATTE} ʟᴀᴛᴛᴇ_ᴍᴀɪᴅ: `{self.bot.version}`\n'
+            + f'{const.E_PYTHON} ᴘʏᴛʜᴏɴ: `{platform.python_version()}`\n'
+            + f'{const.E_DISCORDPY} ᴅɪꜱᴄᴏʀᴅ.ᴘʏ: `{discord.__version__}`',
+            inline=True,
+        )
         embed.add_empty_field(inline=True)
         embed.add_field(
             name=_('process', locale) + ':',
@@ -149,24 +149,22 @@ class About(Cog, name='about'):
         )
 
         view = View()
-        # view.url_button(_('support.server', locale), self.bot.support_invite_url, emoji=str(e.latte_icon))
-        # view.url_button(_('developer', locale), f'https://discord.com/users/{core_dev.id}', emoji=str(e.stacia_dev))
+        view.url_button(_('support.server', locale), self.bot.support_invite_url, emoji=const.E_LATTE)
+        view.url_button(_('developer', locale), f'https://discord.com/users/{core_dev.id}', emoji=const.E_DEV)
 
         await interaction.response.send_message(embed=embed, view=view)
 
     @app_commands.command(name=_T('support'), description=_T('Sends the support server of the bot.'))
     @bot_has_permissions(send_messages=True, embed_links=True)
     async def support(self, interaction: discord.Interaction[Lunaria]) -> None:
-        # locale = interaction.locale
+        locale = interaction.locale
         embed = Embed()
         embed.set_author(name='ꜱᴜᴘᴘᴏʀᴛ:', icon_url=self.bot.user.avatar, url=self.bot.support_invite_url)
         embed.set_thumbnail(url=self.bot.user.avatar)
 
         view = View()
-        # view.url_button(_('support.server', locale), self.bot.support_invite_url, emoji=str(self.bot.emoji.latte_icon))
-        # view.url_button(
-        #     _('developer', locale), f'https://discord.com/users/{self.bot.owner_id}', emoji=str(self.bot.emoji.stacia_dev)
-        # )
+        view.url_button(_('support.server', locale), self.bot.support_invite_url, emoji=const.E_LATTE)
+        view.url_button(_('developer', locale), f'https://discord.com/users/{self.bot.owner_id}', emoji=const.E_LATTE)
 
         await interaction.response.send_message(embed=embed, view=view)
 
