@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import sys
-from typing import TYPE_CHECKING, Any, Callable, Coroutine, Iterable, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Callable, Coroutine, Iterable, TypeVar, Union, Self
 
 import discord
 from discord import Interaction, app_commands
@@ -11,7 +11,6 @@ from discord.ext import commands
 from discord.utils import MISSING
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
 
     from .bot import Lunaria
 

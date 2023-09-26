@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Self
 
 import discord
 from discord import ui
@@ -15,8 +15,6 @@ from core.bot import Lunaria
 if TYPE_CHECKING:
     from bot import Lunaria
     from discord import InteractionMessage, Message
-    from typing_extensions import Self
-
 
 _log = logging.getLogger(__name__)
 

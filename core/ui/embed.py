@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING, Any, Iterable
+from typing import TYPE_CHECKING, Any, Iterable, Self
 
 from discord import Colour, Embed as _Embed
 
 if TYPE_CHECKING:
     from discord.types.embed import EmbedType
-    from typing_extensions import Self
 
 # fmt: off
 __all__ = (
