@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import sys
-from typing import TYPE_CHECKING, Any, Callable, Coroutine, Iterable, TypeVar, Union, Self
+from typing import TYPE_CHECKING, Any, Callable, Coroutine, Iterable, Self, TypeVar
 
 import discord
 from discord import Interaction, app_commands
@@ -11,7 +11,6 @@ from discord.ext import commands
 from discord.utils import MISSING
 
 if TYPE_CHECKING:
-
     from .bot import Lunaria
 
 __all__ = (
@@ -21,16 +20,15 @@ __all__ = (
 
 T = TypeVar('T')
 Coro = Coroutine[Any, Any, T]
-Binding = Union['Group', 'commands.Cog']
+Binding = Group | commands.Cog
 GroupT = TypeVar('GroupT', bound='Binding')
 
-ContextMenuCallback = Union[
-    Callable[[GroupT, 'Interaction[Any]', discord.Member], Coro[Any]],
-    Callable[[GroupT, 'Interaction[Any]', discord.User], Coro[Any]],
-    Callable[[GroupT, 'Interaction[Any]', discord.Message], Coro[Any]],
-    Callable[[GroupT, 'Interaction[Any]', Union[discord.Member, discord.User]], Coro[Any]],
-]
-
+ContextMenuCallback = (
+    Callable[[GroupT, 'Interaction[Any]', discord.Member], Coro[Any]]
+    | Callable[[GroupT, 'Interaction[Any]', discord.User], Coro[Any]]
+    | Callable[[GroupT, 'Interaction[Any]', discord.Message], Coro[Any]]
+    | Callable[[GroupT, 'Interaction[Any]', discord.Member | discord.User], Coro[Any]]
+)
 _log = logging.getLogger(__name__)
 
 
