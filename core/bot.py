@@ -138,7 +138,7 @@ class Lunaria(commands.AutoShardedBot):
         await self.tree.set_translator(self.translator)
 
         self.bot_app_info = await self.application_info()
-        self.owner_ids = [self.bot_app_info.owner.id, 385049730222129152]
+        self.owner_ids = [240059262297047041]
 
         # load cogs
         await self.cogs_load()
