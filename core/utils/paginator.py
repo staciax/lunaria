@@ -1,12 +1,15 @@
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+
 import discord
 from discord.ext.commands import Paginator as CommandPaginator
+
 # import traceback
 
 if TYPE_CHECKING:
     from core.bot import Lunaria
+
 
 class PageSource:
     """An interface representing a menu page's data source for the actual menu page.
@@ -17,6 +20,7 @@ class PageSource:
     - :meth:`is_paginating`
     - :meth:`format_page`
     """
+
     async def _prepare_once(self):
         try:
             # Don't feel like formatting hasattr with
@@ -127,6 +131,57 @@ class PageSource:
             See above.
         """
         raise NotImplementedError
+
+
+class ListPageSource(PageSource):
+    """A data source for a sequence of items.
+
+    This page source does not handle any sort of formatting, leaving it up
+    to the user. To do so, implement the :meth:`format_page` method.
+
+    Attributes
+    ------------
+    entries: Sequence[Any]
+        The sequence of items to paginate.
+    per_page: :class:`int`
+        How many elements are in a page.
+    """
+
+    def __init__(self, entries, *, per_page):
+        self.entries = entries
+        self.per_page = per_page
+
+        pages, left_over = divmod(len(entries), per_page)
+        if left_over:
+            pages += 1
+
+        self._max_pages = pages
+
+    def is_paginating(self):
+        """:class:`bool`: Whether pagination is required."""
+        return len(self.entries) > self.per_page
+
+    def get_max_pages(self):
+        """:class:`int`: The maximum number of pages required to paginate this sequence."""
+        return self._max_pages
+
+    async def get_page(self, page_number):
+        """Returns either a single element of the sequence or
+        a slice of the sequence.
+
+        If :attr:`per_page` is set to ``1`` then this returns a single
+        element. Otherwise it returns at most :attr:`per_page` elements.
+
+        Returns
+        ---------
+        Union[Any, List[Any]]
+            The data returned.
+        """
+        if self.per_page == 1:
+            return self.entries[page_number]
+        else:
+            base = page_number * self.per_page
+            return self.entries[base : base + self.per_page]
 
 
 class NumberedPageModal(discord.ui.Modal, title='Go to page'):
