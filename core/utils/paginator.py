@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 import discord
 from discord.ext.commands import Paginator as CommandPaginator
+from discord.utils import MISSING
 
 # import traceback
 
@@ -202,13 +203,14 @@ class NumberedPageModal(discord.ui.Modal, title='Go to page'):
 class LunaPages(discord.ui.View):
     def __init__(
         self,
-        source: PageSource,
+        source: PageSource = MISSING,
         *,
-        interaction: discord.Interaction[Lunaria],
+        interaction: discord.Interaction[Lunaria] = MISSING,
         check_embeds: bool = True,
         compact: bool = False,
+        **kwargs,
     ):
-        super().__init__()
+        super().__init__(**kwargs)
         self.source: PageSource = source
         self.check_embeds: bool = check_embeds
         self.interaction: discord.Interaction[Lunaria] = interaction
@@ -216,7 +218,9 @@ class LunaPages(discord.ui.View):
         self.current_page: int = 0
         self.compact: bool = compact
         self.clear_items()
-        self.fill_items()
+        if self.source is not MISSING:
+            self.__prepare = True
+            self.fill_items()
 
     def fill_items(self) -> None:
         if not self.compact:
@@ -334,6 +338,12 @@ class LunaPages(discord.ui.View):
         # if self.check_embeds and not self.ctx.channel.permissions_for(self.ctx.me).embed_links:  # type: ignore
         #     await self.ctx.send('Bot does not have embed links permission in this channel.', ephemeral=True)
         #     return
+
+        try:
+            self.__prepare
+        except AttributeError:
+            self.fill_items()
+            self.__prepare = True
 
         await self.source._prepare_once()
         page = await self.source.get_page(0)
