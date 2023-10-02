@@ -17,10 +17,9 @@ def reading_recursive(root: str, /) -> Iterable[int]:
     for x in os.listdir(root):
         if os.path.isdir(x):
             yield from reading_recursive(root + '/' + x)
-            for y in os.listdir(root + '/' + x):
-                if os.path.isdir(root + '/' + x + '/' + y):
-                    yield from reading_recursive(root + '/' + x + '/' + y)
         else:
+            if os.path.isdir(root + '/' + x):
+                yield from reading_recursive(root + '/' + x)
             if x.endswith('.py'):
                 with open(f'{root}/{x}', encoding='utf-8') as r:
                     yield len(r.readlines())
