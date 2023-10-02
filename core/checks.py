@@ -32,38 +32,39 @@ __all__ = (
 
 if TYPE_CHECKING:
     from .bot import Lunaria
+    type Interaction = discord.Interaction[Lunaria]
 
 
-def user(interaction: discord.Interaction[Lunaria]) -> discord.User | discord.Member:
+def user(interaction: Interaction) -> discord.User | discord.Member:
     return interaction.user
 
 
 def owner_only[T]() -> Callable[[T], T]:
-    async def actual_check(interaction: discord.Interaction[Lunaria]):
+    async def actual_check(interaction: Interaction):
         return await interaction.client.is_owner(interaction.user)
 
     return app_commands.check(actual_check)
 
 
-def cooldown_short(interaction: discord.Interaction[Lunaria]) -> Cooldown | None:
+def cooldown_short(interaction: Interaction) -> Cooldown | None:
     if interaction.user == interaction.client.owner:
         return None
     return Cooldown(1, 5)
 
 
-def cooldown_medium(interaction: discord.Interaction[Lunaria]) -> Cooldown | None:
+def cooldown_medium(interaction: Interaction) -> Cooldown | None:
     if interaction.user == interaction.client.owner:
         return None
     return Cooldown(1, 10)
 
 
-def cooldown_long(interaction: discord.Interaction[Lunaria]) -> Cooldown | None:
+def cooldown_long(interaction: Interaction) -> Cooldown | None:
     if interaction.user == interaction.client.owner:
         return None
     return Cooldown(1, 20)
 
 
-def custom_cooldown(interaction: discord.Interaction[Lunaria], rate: float, per: float) -> Cooldown | None:
+def custom_cooldown(interaction: Interaction, rate: float, per: float) -> Cooldown | None:
     if interaction.user == interaction.client.owner:
         return None
     return Cooldown(rate, per)
