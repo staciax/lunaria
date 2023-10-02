@@ -9,8 +9,7 @@ from discord import ui
 from discord.ext import commands
 
 from core.bot import Lunaria
-
-# from ..errors import CheckFailure, ComponentOnCooldown
+from core.errors import CheckFailure, ComponentOnCooldown
 
 if TYPE_CHECKING:
     from bot import Lunaria
@@ -208,16 +207,16 @@ class ViewAuthor(View):
         if user != self.author:
             return False
 
-        # if bucket := self.cooldown.get_bucket(interaction):
-        #     if bucket.update_rate_limit():
-        #         raise ComponentOnCooldown(bucket, bucket.get_retry_after())
+        if bucket := self.cooldown.get_bucket(interaction):
+            if bucket.update_rate_limit():
+                raise ComponentOnCooldown(bucket, bucket.get_retry_after())
 
         return True
 
     async def on_check_failure(self, interaction: discord.Interaction[Lunaria]) -> None:
         """Handles the error when the check fails"""
         command = interaction.command or self.interaction.command
-        # raise CheckFailure(command, self.author)
+        raise CheckFailure(command, self.author)
 
     @property
     def author(self) -> discord.Member | discord.User:

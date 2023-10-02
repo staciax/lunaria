@@ -10,11 +10,10 @@ import discord
 from discord import app_commands, ui
 from jishaku.paginators import PaginatorInterface, WrappedPaginator
 
+from core import errors
 from core.cog import LunaCog as Cog
 from core.i18n import I18n, cog_i18n
 from core.ui.embed import Embed
-
-# from core import errors
 from core.ui.view import View
 from core.utils.chat_formatting import code_block
 
@@ -85,27 +84,27 @@ def get_error_handle_message(error: Exception, locale: discord.Locale) -> tuple[
     ):
         title = _('Not Found', locale)
         message = _('The message was deleted.', locale)
-    # elif isinstance(error, errors.ComponentOnCooldown):
-    #     title = _('Cooldown', locale)
-    #     message = _('You are on cooldown. Please try again in {seconds:.2f} seconds.', locale).format(
-    #         seconds=error.retry_after
-    #     )
-    # elif isinstance(error, errors.UserInputError):
-    #     message = error.message
-    # elif isinstance(error, errors.CheckFailure):
-    #     title = _('Check Failure', locale)
-    #     command = error.command
-    #     author = error.author
-    #     fmt = 'Only {author} can use this command. If you want to use it, use {command}'
-    #     if isinstance(command, (app_commands.Command, app_commands.ContextMenu)) and author is not None:
-    #         command_name = command.qualified_name
-    #         model: discord.app_commands.AppCommand | None = command.extras.get('model', None)
-    #         if model is not None:
-    #             assert isinstance(model, discord.app_commands.AppCommand)
-    #             command_name = model.mention
-    #         message = fmt.format(author=author.mention, command=command_name)
-    #     else:
-    #         message = _('You are not allowed to use this.', locale)
+    elif isinstance(error, errors.ComponentOnCooldown):
+        title = _('Cooldown', locale)
+        message = _('You are on cooldown. Please try again in {seconds:.2f} seconds.', locale).format(
+            seconds=error.retry_after
+        )
+    elif isinstance(error, errors.UserInputError):
+        message = error.message
+    elif isinstance(error, errors.CheckFailure):
+        title = _('Check Failure', locale)
+        command = error.command
+        author = error.author
+        fmt = 'Only {author} can use this command. If you want to use it, use {command}'
+        if isinstance(command, (app_commands.Command, app_commands.ContextMenu)) and author is not None:
+            command_name = command.qualified_name
+            model: discord.app_commands.AppCommand | None = command.extras.get('model', None)
+            if model is not None:
+                assert isinstance(model, discord.app_commands.AppCommand)
+                command_name = model.mention
+            message = fmt.format(author=author.mention, command=command_name)
+        else:
+            message = _('You are not allowed to use this.', locale)
     elif isinstance(error, app_commands.errors.AppCommandError):
         if isinstance(error, app_commands.errors.CommandOnCooldown):
             title = _('Cooldown', locale)
