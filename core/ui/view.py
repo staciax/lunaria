@@ -8,17 +8,17 @@ import discord
 from discord import ui
 from discord.ext import commands
 
-from core.bot import Lunaria
 from core.errors import CheckFailure, ComponentOnCooldown
 
 if TYPE_CHECKING:
     from bot import Lunaria
     from discord import InteractionMessage, Message
+    type Interaction = discord.Interaction[Lunaria]
 
 _log = logging.getLogger(__name__)
 
 
-def key(interaction: discord.Interaction) -> discord.User | discord.Member:
+def key(interaction: Interaction) -> discord.User | discord.Member:
     return interaction.user
 
 
@@ -38,15 +38,11 @@ class View(ui.View):
     def reset_timeout(self) -> None:
         self.timeout = self.timeout
 
-    async def before_callback(self, interaction: discord.Interaction[Lunaria]) -> None:
+    async def before_callback(self, interaction: Interaction) -> None:
         """A callback that is called before the callback is called."""
         pass
 
-    async def after_callback(self, interaction: discord.Interaction[Lunaria]) -> None:
-        """A callback that is called after the callback is called."""
-        pass
-
-    async def _scheduled_task(self, item: discord.ui.Item, interaction: discord.Interaction[Lunaria]):
+    async def _scheduled_task(self, item: discord.ui.Item, interaction: Interaction):
         try:
             item._refresh_state(interaction, interaction.data)  # type: ignore
 
@@ -59,17 +55,14 @@ class View(ui.View):
 
             await self.before_callback(interaction)
             await item.callback(interaction)
-            await self.after_callback(interaction)
         except Exception as e:
             return await self.on_error(interaction, e, item)
 
-    async def on_error(self, interaction: discord.Interaction, error: Exception, item: ui.Item[Any]) -> None:
+    async def on_error(self, interaction: Interaction, error: Exception, item: ui.Item[Any]) -> None:
         interaction.client.dispatch('view_error', interaction, error, item)
 
     @staticmethod
-    async def safe_edit_message(
-        message: discord.Message | discord.InteractionMessage, **kwargs: Any
-    ) -> discord.Message | discord.InteractionMessage | None:
+    async def safe_edit_message(message: Message | InteractionMessage, **kwargs: Any) -> Message | InteractionMessage | None:
         try:
             new_message = await message.edit(**kwargs)
         except (discord.errors.HTTPException, discord.errors.Forbidden):
@@ -79,7 +72,7 @@ class View(ui.View):
 
     # --- code from pycord ---
 
-    async def on_check_failure(self, interaction: discord.Interaction) -> None:
+    async def on_check_failure(self, interaction: Interaction) -> None:
         """coro
 
         A callback that is called when the interaction check fails.
@@ -178,9 +171,9 @@ class View(ui.View):
 
 # thanks stella_bot
 class ViewAuthor(View):
-    def __init__(self, interaction: discord.Interaction[Lunaria], *args: Any, **kwargs: Any) -> None:
+    def __init__(self, interaction: Interaction, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.interaction: discord.Interaction[Lunaria] = interaction
+        self.interaction: Interaction = interaction
         self.locale: discord.Locale = interaction.locale
         self.bot: Lunaria = interaction.client
         self._author: discord.Member | discord.User = interaction.user
@@ -188,12 +181,12 @@ class ViewAuthor(View):
         self.cooldown = commands.CooldownMapping.from_cooldown(4.0, 12.0, key)
         # self.cooldown_user = commands.CooldownMapping.from_cooldown(1.0, 8.0, key)
 
-    async def before_callback(self, interaction: discord.Interaction[Lunaria]) -> None:
+    async def before_callback(self, interaction: Interaction) -> None:
         if self.locale == interaction.locale:
             return
         self.locale = interaction.locale
 
-    async def interaction_check(self, interaction: discord.Interaction[Lunaria]) -> bool:
+    async def interaction_check(self, interaction: Interaction) -> bool:
         """Only allowing the context author to interact with the view"""
 
         user = interaction.user
@@ -213,7 +206,7 @@ class ViewAuthor(View):
 
         return True
 
-    async def on_check_failure(self, interaction: discord.Interaction[Lunaria]) -> None:
+    async def on_check_failure(self, interaction: Interaction) -> None:
         """Handles the error when the check fails"""
         command = interaction.command or self.interaction.command
         raise CheckFailure(command, self.author)
