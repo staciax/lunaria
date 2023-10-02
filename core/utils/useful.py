@@ -22,7 +22,7 @@ def reading_recursive(root: str, /) -> Iterable[int]:
                     yield from reading_recursive(root + '/' + x + '/' + y)
         else:
             if x.endswith('.py'):
-                with open(f'{root}/{x}', encoding="utf-8") as r:
+                with open(f'{root}/{x}', encoding='utf-8') as r:
                     yield len(r.readlines())
 
 
