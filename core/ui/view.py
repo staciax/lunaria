@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 import time
 from typing import TYPE_CHECKING, Any, Self
 
@@ -14,9 +13,6 @@ if TYPE_CHECKING:
     from bot import Lunaria
     from discord import InteractionMessage, Message
     type Interaction = discord.Interaction[Lunaria]
-
-_log = logging.getLogger(__name__)
-
 
 def key(interaction: Interaction) -> discord.User | discord.Member:
     return interaction.user

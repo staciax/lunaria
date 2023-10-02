@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from .cog import LunaCog
 
 
-_log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 def get_path(
@@ -72,7 +72,7 @@ class I18n[T]:
             self.load_from_file(locale.value)
         if not self.read_only:
             self.loop.create_task(self.save())
-        _log.info(f'loaded cogs.{self.cog_name}')
+        log.info(f'loaded cogs.{self.cog_name}')
 
     def load_from_file(self, locale: str) -> None:
         locale_path = get_path(self.cog_folder, locale)
@@ -87,7 +87,7 @@ class I18n[T]:
         for locale in self._data:
             async with self.lock:
                 await self.loop.run_in_executor(None, self._dump, locale)
-        _log.debug(f'saved i18n for {self.cog_name}')
+        log.debug(f'saved i18n for {self.cog_name}')
 
     def _dump(self, locale: str) -> None:
         if locale not in self._data:
@@ -97,13 +97,13 @@ class I18n[T]:
         with contextlib.suppress(IOError, FileExistsError):
             if not locale_path.parent.exists():
                 locale_path.parent.mkdir(parents=True)
-                _log.debug(f'created {locale_path.parent}')
+                log.debug(f'created {locale_path.parent}')
 
         data = self._data[locale]
 
         with locale_path.open('w', encoding='utf-8') as file:
             json.dump(data.copy(), file, indent=4, ensure_ascii=False, sort_keys=True)
-            _log.debug(f'saved i18n for {self.cog_name} in {locale}')
+            log.debug(f'saved i18n for {self.cog_name} in {locale}')
 
     def get_locale(self, locale: str, default: Any = None) -> dict[str, str] | Any | None:
         """Retrieves a locale entry."""
@@ -152,10 +152,10 @@ class I18n[T]:
 
         text = self.get_text(key, locale)
         if text is None:
-            _log.debug(f'found key:{key!r} locale:{locale}')
+            log.debug(f'found key:{key!r} locale:{locale}')
             return key
 
-        _log.debug(f'returning {text!r} for {key!r} in {locale}')
+        log.debug(f'returning {text!r} for {key!r} in {locale}')
         return text
 
     def __contains__(self, locale: Locale | str) -> bool:
