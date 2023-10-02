@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from .bot import Lunaria
     from .cog import LunaCog
 
-    Localizable = Command | Group | ContextMenu | Parameter | Choice
+    type Localizable = Command | Group | ContextMenu | Parameter | Choice
 
 log = logging.getLogger(__name__)
 

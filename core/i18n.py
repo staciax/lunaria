@@ -6,7 +6,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, TypeVar, overload
+from typing import TYPE_CHECKING, Any,  overload
 
 from discord import Locale
 
@@ -20,9 +20,6 @@ if TYPE_CHECKING:
 
     from .cog import LunaCog
 
-    CogT = TypeVar('CogT', bound='commands.Cog | LunaCog')
-
-T = TypeVar('T')
 
 _log = logging.getLogger(__name__)
 
@@ -40,7 +37,7 @@ def get_path(
 # TODO: add i18n to bot
 
 
-class I18n:
+class I18n[T]:
     def __init__(
         self,
         name: str,
@@ -167,7 +164,7 @@ class I18n:
         return locale in self._data
 
 
-def cog_i18n(i18n: I18n):
+def cog_i18n[CogT: 'commands.Cog | LunaCog'](i18n: I18n):
     def decorator(cog_class: type[CogT]) -> type[CogT]:
         setattr(cog_class, '__i18n__', i18n)
         return cog_class

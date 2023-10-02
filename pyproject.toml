@@ -15,5 +15,5 @@ addopts = "-rfEsw -v"
 [tool.pyright]
 reportUnnecessaryTypeIgnoreComment = "warning"
 reportUnusedImport = "error"
-pythonVersion = "3.11"
+pythonVersion = "3.12"
 typeCheckingMode = "basic"

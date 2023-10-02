@@ -20,7 +20,7 @@ __all__ = (
 
 T = TypeVar('T')
 Coro = Coroutine[Any, Any, T]
-Binding = Group | commands.Cog
+type Binding = Group | commands.Cog
 GroupT = TypeVar('GroupT', bound='Binding')
 
 ContextMenuCallback = (
