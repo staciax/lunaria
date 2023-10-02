@@ -37,7 +37,7 @@ def get_path(
 # TODO: add i18n to bot
 
 
-class I18n[T]:
+class I18n:
     def __init__(
         self,
         name: str,
@@ -126,10 +126,10 @@ class I18n[T]:
         ...
 
     @overload
-    def get_text(self, key: str, locale: Locale | str, default: T) -> str | T | None:
+    def get_text[T](self, key: str, locale: Locale | str, default: T) -> str | T | None:
         ...
 
-    def get_text(self, key: str, locale: Locale | str, default: T | None = None) -> str | T | None:
+    def get_text[T](self, key: str, locale: Locale | str, default: T | None = None) -> str | T | None:
         if isinstance(locale, Locale):
             locale = locale.value
 
