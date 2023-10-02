@@ -6,7 +6,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import TYPE_CHECKING, Any,  overload, TypeVar
+from typing import TYPE_CHECKING, Any,  overload
 
 from discord import Locale
 
@@ -19,8 +19,6 @@ if TYPE_CHECKING:
     from discord.ext import commands
 
     from .cog import LunaCog
-
-T = TypeVar('T')
 
 log = logging.getLogger(__name__)
 
@@ -127,10 +125,10 @@ class I18n:
         ...
 
     @overload
-    def get_text(self, key: str, locale: Locale | str, default: T) -> str | T | None:
+    def get_text[T](self, key: str, locale: Locale | str, default: T) -> str | T | None:
         ...
 
-    def get_text(self, key: str, locale: Locale | str, default: T | None = None) -> str | T | None:
+    def get_text[T](self, key: str, locale: Locale | str, default: T | None = None) -> str | T | None:
         if isinstance(locale, Locale):
             locale = locale.value
 
