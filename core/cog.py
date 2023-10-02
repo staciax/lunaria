@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import sys
-from typing import TYPE_CHECKING, Any, Callable, Coroutine, Iterable, Self, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, Coroutine, Iterable, Self
 
 import discord
 from discord import Interaction, app_commands
@@ -18,18 +18,15 @@ __all__ = (
     'context_menu',
 )
 
-T = TypeVar('T')
-Coro = Coroutine[Any, Any, T]
+type Coro[T] = Coroutine[Any, Any, T]
 type Binding = Group | commands.Cog
-GroupT = TypeVar('GroupT', bound='Binding')
-
-ContextMenuCallback = (
+type ContextMenuCallback[GroupT: Binding] = (
     Callable[[GroupT, 'Interaction[Any]', discord.Member], Coro[Any]]
     | Callable[[GroupT, 'Interaction[Any]', discord.User], Coro[Any]]
     | Callable[[GroupT, 'Interaction[Any]', discord.Message], Coro[Any]]
     | Callable[[GroupT, 'Interaction[Any]', discord.Member | discord.User], Coro[Any]]
 )
-_log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 # https://github.com/InterStella0/stella_bot/blob/bf5f5632bcd88670df90be67b888c282c6e83d99/utils/cog.py#L28
@@ -76,9 +73,9 @@ class LunaCog(commands.Cog):
         if interaction.client.is_debug_mode():
             command = interaction.command
             if command is not None:
-                _log.error('exception in %s command on %s cog', command.name, self.qualified_name, exc_info=error)
+                log.error('exception in %s command on %s cog', command.name, self.qualified_name, exc_info=error)
             else:
-                _log.error('exception on %s cog', self.qualified_name, exc_info=error)
+                log.error('exception on %s cog', self.qualified_name, exc_info=error)
         interaction.client.dispatch('app_command_error', interaction, error)
 
     async def _inject(
