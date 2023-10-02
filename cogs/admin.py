@@ -4,11 +4,12 @@ import logging
 from typing import TYPE_CHECKING, Literal
 
 import discord
-from discord import Embed, app_commands
+from discord import app_commands
 from discord.app_commands import locale_str as _T
 from discord.ext import commands
 
 from core.checks import bot_has_permissions, owner_only
+from core.ui.embed import Embed
 
 if TYPE_CHECKING:
     from core.bot import Lunaria
@@ -51,7 +52,7 @@ class Admin(commands.Cog, name='admin'):
         await interaction.response.defer(ephemeral=True)
         await self.bot.load_extension(f'{extension}')
 
-        embed = Embed(description=f"**Loaded**: `{extension}`")  # .success()
+        embed = Embed(description=f"**Loaded**: `{extension}`").success()
         await interaction.followup.send(embed=embed, silent=True)
 
     @extension.command(name=_T('unload'), description=_T('Unload an extension'))
@@ -63,7 +64,7 @@ class Admin(commands.Cog, name='admin'):
         await interaction.response.defer(ephemeral=True)
         await self.bot.unload_extension(f'{extension}')
 
-        embed = Embed(description=f'**Unloaded**: `{extension}`')  # .success()
+        embed = Embed(description=f'**Unloaded**: `{extension}`').success()
         await interaction.followup.send(embed=embed, silent=True)
 
     @extension.command(name=_T('reload'))
@@ -76,7 +77,7 @@ class Admin(commands.Cog, name='admin'):
 
         await self.bot.reload_extension(f'{extension}')
 
-        embed = Embed(description=f"**Reloaded**: `{extension}`")  # .success()
+        embed = Embed(description=f"**Reloaded**: `{extension}`").success()
         await interaction.followup.send(embed=embed, silent=True)
 
     @app_commands.command(name='sync', description='Syncs the application commands to Discord.')
@@ -95,7 +96,7 @@ class Admin(commands.Cog, name='admin'):
             return
         synced = await self.bot.tree.sync()
 
-        embed = Embed(description=f'sync tree: {len(synced)}')  # .success()
+        embed = Embed(description=f'sync tree: {len(synced)}').success()
         if guild_id is not None:
             assert embed.description is not None
             embed.description += f' : `{guild_id}`'

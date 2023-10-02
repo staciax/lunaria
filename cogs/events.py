@@ -8,6 +8,8 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from core.ui.embed import Embed
+
 if TYPE_CHECKING:
     from core.bot import Lunaria
 
@@ -30,7 +32,7 @@ class Event(commands.Cog, name='events'):
         hook = discord.Webhook.partial(int(wh_id), wh_token, session=self.bot.session)
         return hook
 
-    async def send_guild_stats(self, embed: discord.Embed, guild: discord.Guild):
+    async def send_guild_stats(self, embed: Embed, guild: discord.Guild):
         """Send guild stats to webhook"""
 
         member_count = guild.member_count or 1
@@ -53,12 +55,12 @@ class Event(commands.Cog, name='events'):
             _log.info(f'left guild {guild.id} because it is blacklisted')
             return await guild.leave()
 
-        embed = discord.Embed(title='ᴊᴏɪɴᴇᴅ ꜱᴇʀᴠᴇʀ')  # .success()
+        embed = Embed(title='ᴊᴏɪɴᴇᴅ ꜱᴇʀᴠᴇʀ').success()
         await self.send_guild_stats(embed, guild)
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild: discord.Guild) -> None:
-        embed = discord.Embed(title='ʟᴇꜰᴛ ꜱᴇʀᴠᴇʀ')  # .error()
+        embed = Embed(title='ʟᴇꜰᴛ ꜱᴇʀᴠᴇʀ').error()
         await self.send_guild_stats(embed, guild)
 
 

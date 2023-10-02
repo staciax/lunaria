@@ -7,7 +7,7 @@ import traceback
 from typing import TYPE_CHECKING
 
 import discord
-from discord import Embed, app_commands, ui
+from discord import app_commands, ui
 from jishaku.paginators import PaginatorInterface, WrappedPaginator
 
 from core.cog import LunaCog as Cog
