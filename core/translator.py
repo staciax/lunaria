@@ -20,6 +20,12 @@ from discord.app_commands import (
     locale_str,
 )
 
+# fmt: off
+__all__ = (
+    'LunaTranslator',
+)
+# fmt: on
+
 if TYPE_CHECKING:
     from .bot import Lunaria
     from .cog import LunaCog

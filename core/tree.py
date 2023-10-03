@@ -6,6 +6,12 @@ from typing import TYPE_CHECKING
 import discord
 from discord import app_commands
 
+# fmt: off
+__all__ = (
+    'LunaTree',
+)
+# fmt: on
+
 if TYPE_CHECKING:
     from .bot import Lunaria
 

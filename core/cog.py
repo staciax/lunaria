@@ -10,13 +10,13 @@ from discord.app_commands import ContextMenu, Group, locale_str
 from discord.ext import commands
 from discord.utils import MISSING
 
-if TYPE_CHECKING:
-    from .bot import Lunaria
-
 __all__ = (
     'LunaCog',
     'context_menu',
 )
+
+if TYPE_CHECKING:
+    from .bot import Lunaria
 
 type Coro[T] = Coroutine[Any, Any, T]
 type Binding = Group | commands.Cog
