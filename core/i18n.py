@@ -163,8 +163,8 @@ class I18n:
         return locale in self._data
 
 
-def cog_i18n[CogT: 'commands.Cog | LunaCog'](i18n: I18n):
-    def decorator(cog_class: type[CogT]) -> type[CogT]:
+def cog_i18n(i18n: I18n):
+    def decorator[CogT: 'commands.Cog | LunaCog'](cog_class: type[CogT]) -> type[CogT]:
         setattr(cog_class, '__i18n__', i18n)
         return cog_class
 
