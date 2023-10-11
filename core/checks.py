@@ -32,6 +32,7 @@ __all__ = (
 
 if TYPE_CHECKING:
     from .bot import Lunaria
+
     type Interaction = discord.Interaction[Lunaria]
 
 

@@ -12,7 +12,9 @@ from core.errors import CheckFailure, ComponentOnCooldown
 if TYPE_CHECKING:
     from bot import Lunaria
     from discord import InteractionMessage, Message
+
     type Interaction = discord.Interaction[Lunaria]
+
 
 def key(interaction: Interaction) -> discord.User | discord.Member:
     return interaction.user
