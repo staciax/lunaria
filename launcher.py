@@ -1,18 +1,11 @@
-import asyncio
 import contextlib
 import logging
 from logging.handlers import RotatingFileHandler
 
+import uvloop
 from discord import utils
 
 from core.bot import Lunaria
-
-try:
-    import uvloop  # type: ignore
-except ImportError:
-    pass
-else:
-    uvloop.install()
 
 
 class RemoveNoise(logging.Filter):
@@ -39,14 +32,11 @@ def setup_logging():
         logging.getLogger('discord.state').addFilter(RemoveNoise())
 
         log.setLevel(logging.INFO)
-        handler = RotatingFileHandler(
-            filename='lattemaid.log', encoding='utf-8', mode='w', maxBytes=max_bytes, backupCount=5
-        )
+        handler = RotatingFileHandler(filename='lunaria.log', encoding='utf-8', mode='w', maxBytes=max_bytes, backupCount=5)
         dt_fmt = '%Y-%m-%d %H:%M:%S'
         fmt = logging.Formatter('[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{')
         handler.setFormatter(fmt)
         log.addHandler(handler)
-        # if not args.prod:
         handler = logging.StreamHandler()
         if isinstance(handler, logging.StreamHandler) and utils.stream_supports_colour(handler.stream):
             fmt = utils._ColourFormatter()
@@ -68,7 +58,7 @@ async def run_bot():
 
 def main():
     with setup_logging():
-        asyncio.run(run_bot())
+        uvloop.run(run_bot())
 
 
 if __name__ == '__main__':
