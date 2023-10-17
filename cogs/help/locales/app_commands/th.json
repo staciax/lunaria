@@ -1,1 +1,6 @@
-{}
+{
+    "help": {
+        "description": "help command",
+        "name": "help"
+    }
+}
