@@ -10,8 +10,9 @@ from discord.ext import commands
 from core.errors import CheckFailure, ComponentOnCooldown
 
 if TYPE_CHECKING:
-    from bot import Lunaria
     from discord import InteractionMessage, Message
+
+    from bot import Lunaria
 
     type Interaction = discord.Interaction[Lunaria]
 
