@@ -1,11 +1,13 @@
+import asyncio
 import contextlib
 import logging
 from logging.handlers import RotatingFileHandler
 
-import uvloop
 from discord import utils
 
 from core.bot import Lunaria
+
+log = logging.getLogger(__name__)
 
 
 class RemoveNoise(logging.Filter):
@@ -58,7 +60,13 @@ async def run_bot():
 
 def main():
     with setup_logging():
-        uvloop.run(run_bot())
+        try:
+            import uvloop  # type: ignore[import]
+        except ImportError:
+            log.warning('uvloop is not installed, using the default event loop')
+            asyncio.run(run_bot())
+        else:
+            uvloop.run(run_bot())
 
 
 if __name__ == '__main__':
